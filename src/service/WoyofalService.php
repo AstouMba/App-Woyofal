@@ -17,7 +17,7 @@ class WoyofalService
     private TrancheRepository $trancheRepository;
     private AchatRepository $achatRepository;
     private LogAchatRepository $logRepository;
-    
+     
     public function __construct()
     {
         $pdo = Database::getInstance()->getConnexion();
