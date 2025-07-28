@@ -7,11 +7,11 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
 try {
-    $host = $_ENV['DB_HOST'] ?? 'caboose.proxy.rlwy.net';
-    $port = $_ENV['DB_PORT'] ?? '48451';
-    $dbname = $_ENV['DB_NAME'] ?? 'railway';
-    $username = $_ENV['DB_USER'] ?? 'postgres';
-    $password = $_ENV['DB_PASSWORD'] ?? 'RbQUnUCXscZgrBcBUqtqYIIOfsbgNYqi';
+    $host = $_ENV['DB_HOST'] ?? 'aws-0-eu-west-3.pooler.supabase.com';
+    $port = $_ENV['DB_PORT'] ?? '5432';
+    $dbname = $_ENV['DB_NAME'] ?? 'postgres';
+    $username = $_ENV['DB_USER'] ?? 'postgres.numtenhayosqnztaahuv';
+    $password = $_ENV['DB_PASSWORD'] ?? 'Astou0000';
 
     $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
     $pdo = new PDO($dsn, $username, $password, [
