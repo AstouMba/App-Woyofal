@@ -1,5 +1,2 @@
-docker-compose.yml
-Dockerfile
 vendor/
 .env
-apache.conf
