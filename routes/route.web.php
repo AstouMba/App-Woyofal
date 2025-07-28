@@ -5,16 +5,16 @@ use DevNoKage\ErrorController;
 use App\Controller\WoyofalController;
 
 $routes = [
-    '/' => [
-        KeyRoute::CONTROLLER->value => ErrorController::class,
-        KeyRoute::METHOD->value => '_404',
-        KeyRoute::MIDDLEWARE->value => []
-    ],
-    '/404' => [
-        KeyRoute::CONTROLLER->value => ErrorController::class,
-        KeyRoute::METHOD->value => '_404',
-        KeyRoute::MIDDLEWARE->value => []
-    ],
+    // '/' => [
+    //     KeyRoute::CONTROLLER->value => ErrorController::class,
+    //     KeyRoute::METHOD->value => '_404',
+    //     KeyRoute::MIDDLEWARE->value => []
+    // ],
+    // '/404' => [
+    //     KeyRoute::CONTROLLER->value => ErrorController::class,
+    //     KeyRoute::METHOD->value => '_404',
+    //     KeyRoute::MIDDLEWARE->value => []
+    // ],
     '/api/woyofal/acheter' => [
         KeyRoute::CONTROLLER->value => WoyofalController::class,
         KeyRoute::METHOD->value => 'acheter',
