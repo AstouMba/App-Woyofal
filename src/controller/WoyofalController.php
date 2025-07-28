@@ -96,13 +96,13 @@ class WoyofalController
             
             // 4. Valider les champs requis
             if (!isset($input['numero_compteur']) || empty($input['numero_compteur'])) {
-                error_log(" numero_compteur manquant dans: " . json_encode($input));
+                error_log("❌ numero_compteur manquant dans: " . json_encode($input));
                 $this->sendErrorResponse('Le numéro de compteur est requis', 400);
                 return;
             }
             
             if (!isset($input['montant']) || !is_numeric($input['montant'])) {
-                error_log(" montant invalide: " . ($input['montant'] ?? 'non défini'));
+                error_log("❌ montant invalide: " . ($input['montant'] ?? 'non défini'));
                 $this->sendErrorResponse('Le montant est requis et doit être numérique', 400);
                 return;
             }
@@ -111,7 +111,7 @@ class WoyofalController
             $numero_compteur = trim($input['numero_compteur']);
             $montant = (float) $input['montant'];
 
-            error_log("Données validées - Compteur: $numero_compteur, Montant: $montant");
+            error_log("✅ Données validées - Compteur: $numero_compteur, Montant: $montant");
 
             // 6. Effectuer l'achat via le service
             error_log("Appel du service effectuerAchat...");
@@ -122,7 +122,7 @@ class WoyofalController
             $this->sendResponse($result);
             
         } catch (\Exception $e) {
-            error_log(" Erreur dans acheter(): " . $e->getMessage());
+            error_log("❌ Erreur dans acheter(): " . $e->getMessage());
             error_log("Stack trace: " . $e->getTraceAsString());
             $this->sendErrorResponse('Erreur lors de l\'achat: ' . $e->getMessage(), 500);
         }

@@ -3,22 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\LogAchat;
-use DevNoKage\Database;
-
+use PDO;
 class LogAchatRepository
 {
-    private \PDO $connection;
-    
-    public function __construct()
+    private PDO $connection;
+
+    public function __construct(PDO $connection)
     {
-        $this->connection = Database::getInstance(
-           'pgsql',
-            'caboose.proxy.rlwy.net',
-            48451,
-            'railway',
-            'postgres',
-            'RbQUnUCXscZgrBcBUqtqYIIOfsbgNYqi'
-        )->getConnexion();
+        $this->connection = $connection;
     }
     
     public function save(LogAchat $log): LogAchat

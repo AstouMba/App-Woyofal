@@ -3,22 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\Compteur;
-use DevNoKage\Database;
-
+use PDO;
 class CompteurRepository
 {
-    private \PDO $connection;
+    private PDO $connection;
 
-    public function __construct()
+    public function __construct(PDO $connection)
     {
-        $this->connection = Database::getInstance(
-           'pgsql',
-            'caboose.proxy.rlwy.net',
-            48451,
-            'railway',
-            'postgres',
-            'RbQUnUCXscZgrBcBUqtqYIIOfsbgNYqi'
-        )->getConnexion();
+        $this->connection = $connection;
     }
 
     public function findByNumero(string $numero): ?Compteur

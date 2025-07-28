@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Service;
-
+use DevNoKage\Database;
 use App\Entity\Achat;
 use App\Entity\LogAchat;
 use App\Repository\CompteurRepository;
@@ -20,11 +20,12 @@ class WoyofalService
     
     public function __construct()
     {
-        $this->compteurRepository = new CompteurRepository();
-        $this->clientRepository = new ClientRepository();
-        $this->trancheRepository = new TrancheRepository();
-        $this->achatRepository = new AchatRepository();
-        $this->logRepository = new LogAchatRepository();
+        $pdo = Database::getInstance()->getConnexion();
+        $this->compteurRepository = new CompteurRepository($pdo);
+        $this->clientRepository = new ClientRepository($pdo);
+        $this->trancheRepository = new TrancheRepository($pdo);
+        $this->achatRepository = new AchatRepository($pdo);
+        $this->logRepository = new LogAchatRepository($pdo);
     }
     
     public function effectuerAchat(string $numero_compteur, float $montant): array

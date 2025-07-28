@@ -3,23 +3,15 @@
 namespace App\Repository;
 
 use App\Entity\Tranche;
-use DevNoKage\Database;
-
+use PDO;
 
 class TrancheRepository
 {
-    private \PDO $connection;
-    
-    public function __construct()
+    private PDO $connection;
+
+    public function __construct(PDO $connection)
     {
-        $this->connection = Database::getInstance(
-            'pgsql',
-            'caboose.proxy.rlwy.net',
-            48451,
-            'railway',
-            'postgres',
-            'RbQUnUCXscZgrBcBUqtqYIIOfsbgNYqi'
-        )->getConnexion();
+        $this->connection = $connection;
     }
     public function findAll(): array
     {

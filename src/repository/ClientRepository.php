@@ -3,87 +3,72 @@
 namespace App\Repository;
 
 use App\Entity\Client;
-use DevNoKage\Database;
-
+use PDO;
 
 class ClientRepository
 {
-    private \PDO $connection;
-    
-   public function __construct()
+    private PDO $connection;
+
+    public function __construct(PDO $connection)
     {
-        $this->connection = Database::getInstance(
-            'pgsql',
-            'caboose.proxy.rlwy.net',
-            48451,
-            'railway',
-            'postgres',
-            'RbQUnUCXscZgrBcBUqtqYIIOfsbgNYqi'
-        )->getConnexion();
+        $this->connection = $connection;
     }
-    
+
     public function findById(int $id): ?Client
     {
         $sql = "SELECT * FROM clients WHERE id = :id";
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
-        
+
         $data = $stmt->fetch();
-        if (!$data) {
-            return null;
-        }
-        
-        return $this->hydrate($data);
+
+        return $data ? $this->hydrate($data) : null;
     }
-    
+
     public function save(Client $client): Client
     {
         if ($client->getId()) {
             return $this->update($client);
         }
-        
-        $sql = "INSERT INTO clients (nom, prenom, telephone, adresse) 
+
+        $sql = "INSERT INTO clients (nom, prenom, telephone, adresse)
                 VALUES (:nom, :prenom, :telephone, :adresse) RETURNING id";
-        
+
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue(':nom', $client->getNom());
         $stmt->bindValue(':prenom', $client->getPrenom());
         $stmt->bindValue(':telephone', $client->getTelephone());
         $stmt->bindValue(':adresse', $client->getAdresse());
-        
         $stmt->execute();
-        $id = $stmt->fetchColumn();
-        $client->setId($id);
-        
+
+        $client->setId($stmt->fetchColumn());
+
         return $client;
     }
-    
+
     private function update(Client $client): Client
     {
-        $sql = "UPDATE clients SET nom = :nom, prenom = :prenom, 
+        $sql = "UPDATE clients SET nom = :nom, prenom = :prenom,
                 telephone = :telephone, adresse = :adresse WHERE id = :id";
-        
+
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue(':id', $client->getId());
         $stmt->bindValue(':nom', $client->getNom());
         $stmt->bindValue(':prenom', $client->getPrenom());
         $stmt->bindValue(':telephone', $client->getTelephone());
         $stmt->bindValue(':adresse', $client->getAdresse());
-        
         $stmt->execute();
-        
+
         return $client;
     }
-    
+
     private function hydrate(array $data): Client
     {
-        $client = new Client($data['id']);
-        $client->setNom($data['nom'])
-               ->setPrenom($data['prenom'])
-               ->setTelephone($data['telephone'])
-               ->setAdresse($data['adresse']);
-        
-        return $client;
+        return (new Client($data['id']))
+            ->setNom($data['nom'])
+            ->setPrenom($data['prenom'])
+            ->setTelephone($data['telephone'])
+            ->setAdresse($data['adresse']);
     }
 }

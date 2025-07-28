@@ -1,33 +1,28 @@
 <?php
-
 namespace DevNoKage;
 
 use PDO;
 
-class Database extends Singleton
+class Database
 {
+    use Singleton;
+
     private ?PDO $pdo = null;
-    private static array $configDefault = [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES => false
-    ];
 
-    public function __construct(string $driver, string $host, $db_port, string $db_name, string $db_user, string $db_password)
+    private function __construct()
     {
+        $dsn = sprintf(
+            '%s:host=%s;port=%s;dbname=%s',
+            DB_DRIVE,
+            DB_HOST,
+            DB_PORT,
+            DB_NAME
+        );
 
-        // dd($db_password);
-        try {
-            $dsn = $driver . ':host=' . $host . ';port=' . $db_port . ';dbname=' . $db_name;
-            $this->pdo = new PDO(
-                $dsn,
-                $db_user,
-                $db_password,
-                self::$configDefault
-            );
-        } catch (\PDOException $e) {
-            die('Erreur de connexion à la base de données : ' . $e->getMessage());
-        }
+        $this->pdo = new PDO($dsn, DB_USER, DB_PASSWORD, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
     }
 
     public function getConnexion(): PDO

@@ -1,23 +1,19 @@
 <?php
 namespace DevNoKage;
 
-// app/core/Singleton.php
-
-
-abstract class Singleton
+trait Singleton
 {
-    private static array $instances = [];
+    private static ?self $instance = null;
 
-    public static function getInstance(...$args): static
+    public static function getInstance(): self
     {
-        $class = static::class;
-
-        if (!isset(self::$instances[$class])) {
-            self::$instances[$class] = new static(...$args);
+        if (self::$instance === null) {
+            self::$instance = new self();  // OK avec constructeur private de la classe qui utilise ce trait
         }
-
-        return self::$instances[$class];
+        return self::$instance;
     }
+
+    // Empêcher clonage et unserialization
+    private function __clone() {}
+    private function __wakeup() {}
 }
-
-
